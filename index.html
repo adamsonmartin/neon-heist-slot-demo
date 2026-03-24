@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎰 NEON HEIST - Pro Slot Demo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0a001f, #220044);
+      color: #fff;
+      font-family: 'Press Start 2P', system-ui;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+      background: rgba(15, 5, 45, 0.97);
+      border: 8px solid #00ffcc;
+      border-radius: 30px;
+      padding: 30px;
+      box-shadow: 0 0 120px rgba(0, 255, 204, 0.8);
+    }
+    h1 {
+      font-size: 42px;
+      margin: 0 0 10px;
+      text-shadow: 0 0 40px #ff00cc;
+    }
+    .subtitle { 
+      font-size: 15px; 
+      opacity: 0.9; 
+      margin-bottom: 25px; 
+    }
+
+    .header {
+      background: #110022;
+      padding: 20px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      border: 4px solid #ff00cc;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .slot-machine {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 20px auto;
+      padding: 20px;
+      background: #1a002f;
+      border: 12px solid #ffcc00;
+      border-radius: 22px;
+      box-shadow: 0 0 80px rgba(255, 204, 0, 0.9);
+      max-width: fit-content;
+    }
+
+    .reel {
+      width: 85px;
+      height: 425px;
+      overflow: hidden;
+      border: 4px solid #00ffcc;
+      border-radius: 12px;
+      background: #0f001a;
+      position: relative;
+    }
+
+    .reel-strip {
+      display: flex;
+      flex-direction: column;
+      animation: spin 2.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+
+    .symbol {
+      width: 85px;
+      height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 58px;
+      text-shadow: 0 0 20px #00ffcc;
+    }
+
+    @keyframes spin {
+      0% { transform: translateY(-3000px); }
+      100% { transform: translateY(0); }
+    }
+
+    .paytable {
+      background: #110022;
+      padding: 20px;
+      border-radius: 18px;
+      margin: 30px auto;
+      border: 3px solid #ffff00;
+      max-width: 800px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    td, th { padding: 12px; border: 2px solid #ff00cc; }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      background: linear-gradient(45deg, #ff00cc, #cc00ff);
+      color: #fff;
+      border: none;
+      padding: 18px 50px;
+      font-size: 18px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: linear-gradient(#00ffcc, #00ccaa);
+      color: #000;
+      transform: scale(1.08);
+    }
+    .result {
+      margin-top: 25px;
+      font-size: 34px;
+      min-height: 100px;
+      text-shadow: 0 0 40px #ffff00;
+    }
+    .win { animation: glow 0.7s infinite alternate; }
+    @keyframes glow { from { text-shadow: 0 0 25px #ffff00; } to { text-shadow: 0 0 70px #ffff00; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎰 NEON HEIST</h1>
+    <p class="subtitle">6×5 Cluster Pays + Cascade • Smooth Reel Spin • Martin Adamson</p>
+    
+    <div class="header">
+      <div>Balance: <span id="balance">8500</span> €</div>
+      <div>Bet: <span id="bet">60</span> €</div>
+      <div>Win: <span id="winAmount">0</span> €</div>
+    </div>
+
+    <div class="slot-machine" id="slot"></div>
+
+    <div class="paytable">
+      <h3>CLUSTER PAYTABLE (× Bet)</h3>
+      <table>
+        <tr><th>Cluster Size</th><th>Multiplier</th><th>Win with 60€ bet</th></tr>
+        <tr><td>5–7 symbols</td><td>×5</td><td>300 €</td></tr>
+        <tr><td>8–11 symbols</td><td>×15</td><td>900 €</td></tr>
+        <tr><td>12–15 symbols</td><td>×30</td><td>1,800 €</td></tr>
+        <tr><td>16+ symbols</td><td>×60</td><td>3,600 €</td></tr>
+      </table>
+    </div>
+
+    <div class="controls">
+      <button onclick="changeBet(-30)">– BET</button>
+      <button onclick="spin()" style="padding:20px 85px; font-size:24px;">SPIN!</button>
+      <button onclick="changeBet(30)">+ BET</button>
+      <button onclick="toggleAuto()">AUTO SPIN</button>
+    </div>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    const symbols = ['💎','🔫','🕶️','⭐','⚡','🔥','💰','🃏','🍒','🌟'];
+    let balance = 8500;
+    let bet = 60;
+    let isSpinning = false;
+    let autoSpinning = false;
+
+    function createReel() {
+      const reel = document.createElement('div');
+      reel.className = 'reel';
+      const strip = document.createElement('div');
+      strip.className = 'reel-strip';
+      
+      for (let i = 0; i < 30; i++) {
+        const sym = document.createElement('div');
+        sym.className = 'symbol';
+        sym.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        strip.appendChild(sym);
+      }
+      reel.appendChild(strip);
+      return reel;
+    }
+
+    function initSlot() {
+      const slot = document.getElementById('slot');
+      slot.innerHTML = '';
+      for (let i = 0; i < 6; i++) {
+        slot.appendChild(createReel());
+      }
+    }
+
+    async function spin() {
+      if (isSpinning || balance < bet) return;
+      isSpinning = true;
+      balance -= bet;
+      document.getElementById('balance').textContent = balance;
+      document.getElementById('result').innerHTML = '';
+
+      const reels = document.querySelectorAll('.reel-strip');
+      const durations = [2800, 3000, 3200, 3400, 3600, 3800];
+
+      reels.forEach((reel, index) => {
+        reel.style.animation = 'none';
+        void reel.offsetWidth;
+        reel.style.animation = `spin ${durations[index]}ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards`;
+      });
+
+      setTimeout(() => {
+        const winAmount = Math.floor(bet * (Math.random() * 45 + 15));
+        balance += winAmount;
+        document.getElementById('winAmount').textContent = winAmount;
+        document.getElementById('result').innerHTML = `🎉 BIG WIN! +${winAmount}€`;
+        document.getElementById('result').classList.add('win');
+        document.getElementById('balance').textContent = balance;
+        isSpinning = false;
+      }, 4000);
+    }
+
+    function changeBet(amount) {
+      bet = Math.max(30, Math.min(600, bet + amount));
+      document.getElementById('bet').textContent = bet;
+    }
+
+    function toggleAuto() {
+      autoSpinning = !autoSpinning;
+      if (autoSpinning) {
+        setInterval(() => { if (!isSpinning && balance >= bet) spin(); }, 4500);
+      }
+    }
+
+    // Initialize
+    initSlot();
+    document.getElementById('balance').textContent = balance;
+    document.getElementById('bet').textContent = bet;
+  </script>
+</body>
+</html>
