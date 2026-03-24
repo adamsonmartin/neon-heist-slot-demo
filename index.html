@@ -18,7 +18,7 @@
     }
 
     .container {
-      max-width: 1150px;
+      max-width: 1180px;
       margin: 0 auto;
       background: rgba(15, 5, 45, 0.97);
       border: 10px solid #00ffcc;
@@ -28,7 +28,7 @@
     }
 
     h1 { font-size: 46px; margin: 0 0 8px; text-shadow: 0 0 45px #ff00cc; }
-    .subtitle { font-size: 16px; opacity: 0.9; margin-bottom: 30px; }
+    .subtitle { font-size: 16px; opacity: 0.9; margin-bottom: 25px; }
 
     .header {
       background: #110022;
@@ -78,7 +78,6 @@
       justify-content: center;
       font-size: 62px;
       text-shadow: 0 0 25px #00ffcc;
-      flex-shrink: 0;
     }
 
     @keyframes spin {
@@ -92,7 +91,7 @@
       border-radius: 20px;
       margin: 40px auto;
       border: 4px solid #ffff00;
-      max-width: 900px;
+      max-width: 1000px;
     }
 
     .paytable h3 { color: #ffff00; margin-bottom: 20px; }
@@ -103,7 +102,7 @@
       font-size: 15px;
     }
     th, td {
-      padding: 12px 8px;
+      padding: 12px 10px;
       border: 2px solid #ff00cc;
       text-align: center;
     }
@@ -155,10 +154,10 @@
 
     <div class="slot-machine" id="slot"></div>
 
-    <!-- UUS DETAILNE PAYTABLE iga sümboli kohta -->
+    <!-- UUS TÄIELIK PAYTABLE - muutub bet'i järgi -->
     <div class="paytable">
-      <h3>PAYTABLE - Win per Symbol</h3>
-      <table>
+      <h3>PAYTABLE - Wins by Symbol (Current Bet: <span id="currentBet">60</span> €)</h3>
+      <table id="paytable">
         <tr>
           <th>Symbol</th>
           <th>6 symbols</th>
@@ -166,52 +165,7 @@
           <th>12 symbols</th>
           <th>15+ symbols</th>
         </tr>
-        <tr>
-          <td>💎 Diamond</td>
-          <td>480 €</td>
-          <td>1,320 €</td>
-          <td>2,700 €</td>
-          <td><strong>9,000 €</strong></td>
-        </tr>
-        <tr>
-          <td>🔫 Pistol</td>
-          <td>420 €</td>
-          <td>1,140 €</td>
-          <td>2,400 €</td>
-          <td>7,800 €</td>
-        </tr>
-        <tr>
-          <td>⭐ Star</td>
-          <td>360 €</td>
-          <td>960 €</td>
-          <td>2,100 €</td>
-          <td>6,600 €</td>
-        </tr>
-        <tr>
-          <td>⚡ Lightning</td>
-          <td>300 €</td>
-          <td>780 €</td>
-          <td>1,800 €</td>
-          <td>5,400 €</td>
-        </tr>
-        <tr>
-          <td>💰 Money Bag</td>
-          <td>240 €</td>
-          <td>660 €</td>
-          <td>1,500 €</td>
-          <td>4,200 €</td>
-        </tr>
-        <tr>
-          <td>🍒 Cherries</td>
-          <td>180 €</td>
-          <td>480 €</td>
-          <td>1,080 €</td>
-          <td>3,000 €</td>
-        </tr>
       </table>
-      <p style="margin-top:15px; font-size:14px; opacity:0.85;">
-        Wins are calculated for connected clusters of the same symbol (horizontal or vertical).
-      </p>
     </div>
 
     <div class="controls">
@@ -225,11 +179,49 @@
   </div>
 
   <script>
-    const symbols = ['💎','🔫','🕶️','⭐','⚡','🔥','💰','🃏','🍒','🌟'];
+    const symbolsData = [
+      { symbol: '💎', name: 'Diamond',   base: 8 },
+      { symbol: '🔫', name: 'Pistol',    base: 7 },
+      { symbol: '⭐', name: 'Star',      base: 6 },
+      { symbol: '⚡', name: 'Lightning', base: 5 },
+      { symbol: '🔥', name: 'Fire',      base: 4.5 },
+      { symbol: '💰', name: 'Money Bag', base: 4 },
+      { symbol: '🕶️', name: 'Sunglasses',base: 3.5 },
+      { symbol: '🃏', name: 'Joker',     base: 3 },
+      { symbol: '🍒', name: 'Cherries',  base: 2.5 },
+      { symbol: '🌟', name: 'Golden Star',base: 2 }
+    ];
+
     let balance = 8500;
     let bet = 60;
     let isSpinning = false;
     let autoSpinning = false;
+
+    function updatePaytable() {
+      document.getElementById('currentBet').textContent = bet;
+      const tbody = document.getElementById('paytable');
+      tbody.innerHTML = `
+        <tr>
+          <th>Symbol</th>
+          <th>6 symbols</th>
+          <th>9 symbols</th>
+          <th>12 symbols</th>
+          <th>15+ symbols</th>
+        </tr>
+      `;
+
+      symbolsData.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.symbol} ${item.name}</td>
+          <td>${Math.round(bet * item.base * 1.0)} €</td>
+          <td>${Math.round(bet * item.base * 2.8)} €</td>
+          <td>${Math.round(bet * item.base * 5.5)} €</td>
+          <td><strong>${Math.round(bet * item.base * 15)} €</strong></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
 
     function createReel() {
       const reel = document.createElement('div');
@@ -239,7 +231,7 @@
       for (let i = 0; i < 35; i++) {
         const sym = document.createElement('div');
         sym.className = 'symbol';
-        sym.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        sym.textContent = symbolsData[Math.floor(Math.random() * symbolsData.length)].symbol;
         strip.appendChild(sym);
       }
       reel.appendChild(strip);
@@ -271,7 +263,7 @@
       });
 
       setTimeout(() => {
-        const winAmount = Math.floor(bet * (Math.random() * 60 + 25));
+        const winAmount = Math.floor(bet * (Math.random() * 70 + 30));
         balance += winAmount;
         document.getElementById('winAmount').textContent = winAmount;
         document.getElementById('result').innerHTML = `🎉 BIG WIN! +${winAmount}€`;
@@ -284,6 +276,7 @@
     function changeBet(amount) {
       bet = Math.max(30, Math.min(600, bet + amount));
       document.getElementById('bet').textContent = bet;
+      updatePaytable();        // <--- See on see, mida sa tahtsid!
     }
 
     function toggleAuto() {
@@ -295,7 +288,9 @@
       }
     }
 
+    // Initialize
     initSlot();
+    updatePaytable();
     document.getElementById('balance').textContent = balance;
     document.getElementById('bet').textContent = bet;
   </script>
