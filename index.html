@@ -18,7 +18,7 @@
     }
 
     .container {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
       background: rgba(15, 5, 45, 0.97);
       border: 10px solid #00ffcc;
@@ -27,7 +27,7 @@
       box-shadow: 0 0 130px rgba(0, 255, 204, 0.75);
     }
 
-    h1 { font-size: 46px; margin: 0 0 8px; text-shadow: 0 0 45px #ff00cc; }
+    h1 { font-size: 48px; margin: 0 0 8px; text-shadow: 0 0 45px #ff00cc; }
     .subtitle { font-size: 16px; opacity: 0.9; margin-bottom: 25px; }
 
     .header {
@@ -43,9 +43,9 @@
       font-size: 18px;
     }
 
-    .slot-container {
+    .slot-wrapper {
       position: relative;
-      margin: 0 auto 40px;
+      margin: 0 auto 35px;
       max-width: fit-content;
     }
 
@@ -90,21 +90,21 @@
       100% { transform: translateY(0); }
     }
 
-    /* Big Win keskel */
+    /* Big Win - keskel slot'i */
     #bigWin {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 58px;
+      font-size: 62px;
       font-weight: bold;
       color: #ffff00;
       text-shadow: 0 0 40px #ffff00, 0 0 90px #ff00cc;
       pointer-events: none;
       opacity: 0;
-      z-index: 20;
+      z-index: 30;
       white-space: nowrap;
-      transition: all 0.4s ease;
+      transition: all 0.4s ease-out;
     }
 
     .paytable {
@@ -121,9 +121,9 @@
     th { background: #1f0033; color: #ffff00; }
 
     .controls {
-      margin-top: 20px;
+      margin-top: 15px;
       display: flex;
-      gap: 18px;
+      gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -132,10 +132,11 @@
       background: linear-gradient(45deg, #ff00cc, #cc00ff);
       color: #fff;
       border: none;
-      padding: 18px 55px;
-      font-size: 19px;
+      padding: 18px 60px;
+      font-size: 20px;
       border-radius: 16px;
       cursor: pointer;
+      min-width: 160px;
     }
     button:hover {
       background: linear-gradient(#00ffcc, #00ccaa);
@@ -155,22 +156,22 @@
       <div>Win: <span id="winAmount">0</span> €</div>
     </div>
 
-    <div class="slot-container">
+    <div class="slot-wrapper">
       <div class="slot-machine" id="slot">
         <div id="bigWin">BIG WIN!</div>
       </div>
     </div>
 
+    <div class="controls">
+      <button onclick="changeBet(-30)">– BET</button>
+      <button onclick="spin()" style="padding:22px 100px; font-size:26px;">SPIN!</button>
+      <button onclick="changeBet(30)">+ BET</button>
+      <button onclick="toggleAuto()">AUTO SPIN</button>
+    </div>
+
     <div class="paytable">
       <h3>PAYTABLE - Win per Symbol (Bet: <span id="currentBet">60</span> €)</h3>
       <table id="paytable"></table>
-    </div>
-
-    <div class="controls">
-      <button onclick="changeBet(-30)">– BET</button>
-      <button onclick="spin()" style="padding:22px 95px; font-size:26px;">SPIN!</button>
-      <button onclick="changeBet(30)">+ BET</button>
-      <button onclick="toggleAuto()">AUTO SPIN</button>
     </div>
 
     <div id="result" class="result"></div>
@@ -251,19 +252,19 @@
       });
 
       setTimeout(() => {
-        const winAmount = Math.floor(bet * (Math.random() * 80 + 40));
+        const winAmount = Math.floor(bet * (Math.random() * 85 + 45));
         balance += winAmount;
         document.getElementById('winAmount').textContent = winAmount;
 
         const bigWin = document.getElementById('bigWin');
         bigWin.textContent = `+${winAmount}€`;
         bigWin.style.opacity = '1';
-        bigWin.style.transform = 'translate(-50%, -50%) scale(1.3)';
+        bigWin.style.transform = 'translate(-50%, -50%) scale(1.35)';
 
         setTimeout(() => {
           bigWin.style.opacity = '0';
-          bigWin.style.transform = 'translate(-50%, -50%) scale(0.8)';
-        }, 2000);
+          bigWin.style.transform = 'translate(-50%, -50%) scale(0.7)';
+        }, 2200);
 
         document.getElementById('result').innerHTML = `🎉 BIG WIN! +${winAmount}€`;
         document.getElementById('result').classList.add('win');
