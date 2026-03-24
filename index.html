@@ -3,135 +3,159 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎰 NEON HEIST - Pro Slot Demo</title>
+  <title>🎰 NEON HEIST - iGaming Slot Demo</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
     body {
       margin: 0;
-      background: linear-gradient(135deg, #0a001f, #220044);
+      background: linear-gradient(135deg, #0a001f, #1f0033);
       color: #fff;
       font-family: 'Press Start 2P', system-ui;
       text-align: center;
       padding: 20px;
       min-height: 100vh;
     }
+
     .container {
-      max-width: 1050px;
+      max-width: 1100px;
       margin: 0 auto;
       background: rgba(15, 5, 45, 0.97);
-      border: 8px solid #00ffcc;
-      border-radius: 30px;
-      padding: 30px;
-      box-shadow: 0 0 120px rgba(0, 255, 204, 0.8);
+      border: 10px solid #00ffcc;
+      border-radius: 32px;
+      padding: 30px 20px;
+      box-shadow: 0 0 130px rgba(0, 255, 204, 0.75);
     }
+
     h1 {
-      font-size: 42px;
-      margin: 0 0 10px;
-      text-shadow: 0 0 40px #ff00cc;
+      font-size: 46px;
+      margin: 0 0 8px;
+      text-shadow: 0 0 45px #ff00cc;
+      letter-spacing: 3px;
     }
-    .subtitle { 
-      font-size: 15px; 
-      opacity: 0.9; 
-      margin-bottom: 25px; 
+
+    .subtitle {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 30px;
     }
 
     .header {
       background: #110022;
-      padding: 20px;
+      padding: 22px;
       border-radius: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
       border: 4px solid #ff00cc;
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 25px;
+      font-size: 18px;
     }
 
     .slot-machine {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       justify-content: center;
-      margin: 20px auto;
-      padding: 20px;
+      margin: 0 auto 40px;
+      padding: 25px;
       background: #1a002f;
-      border: 12px solid #ffcc00;
-      border-radius: 22px;
-      box-shadow: 0 0 80px rgba(255, 204, 0, 0.9);
+      border: 14px solid #ffcc00;
+      border-radius: 24px;
+      box-shadow: 0 0 90px rgba(255, 204, 0, 0.85);
       max-width: fit-content;
     }
 
     .reel {
-      width: 85px;
-      height: 425px;
+      width: 92px;
+      height: 460px;
       overflow: hidden;
-      border: 4px solid #00ffcc;
-      border-radius: 12px;
+      border: 5px solid #00ffcc;
+      border-radius: 14px;
       background: #0f001a;
-      position: relative;
     }
 
     .reel-strip {
       display: flex;
       flex-direction: column;
-      animation: spin 2.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+      animation: spin 3.2s cubic-bezier(0.23, 0.1, 0.25, 1) forwards;
     }
 
     .symbol {
-      width: 85px;
-      height: 85px;
+      width: 92px;
+      height: 92px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 58px;
-      text-shadow: 0 0 20px #00ffcc;
+      font-size: 62px;
+      text-shadow: 0 0 25px #00ffcc;
+      flex-shrink: 0;
     }
 
     @keyframes spin {
-      0% { transform: translateY(-3000px); }
+      0%   { transform: translateY(-3800px); }
       100% { transform: translateY(0); }
     }
 
     .paytable {
       background: #110022;
-      padding: 20px;
-      border-radius: 18px;
-      margin: 30px auto;
-      border: 3px solid #ffff00;
-      max-width: 800px;
+      padding: 25px;
+      border-radius: 20px;
+      margin: 40px auto;
+      border: 4px solid #ffff00;
+      max-width: 820px;
     }
-    table { width: 100%; border-collapse: collapse; }
-    td, th { padding: 12px; border: 2px solid #ff00cc; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 14px;
+      border: 2px solid #ff00cc;
+      text-align: center;
+    }
 
     .controls {
-      margin-top: 20px;
+      margin-top: 30px;
       display: flex;
-      gap: 15px;
+      gap: 18px;
       justify-content: center;
       flex-wrap: wrap;
     }
+
     button {
       background: linear-gradient(45deg, #ff00cc, #cc00ff);
       color: #fff;
       border: none;
-      padding: 18px 50px;
-      font-size: 18px;
-      border-radius: 14px;
+      padding: 18px 55px;
+      font-size: 19px;
+      border-radius: 16px;
       cursor: pointer;
+      box-shadow: 0 0 30px rgba(255, 0, 204, 0.8);
     }
+
     button:hover {
       background: linear-gradient(#00ffcc, #00ccaa);
       color: #000;
       transform: scale(1.08);
     }
+
     .result {
-      margin-top: 25px;
-      font-size: 34px;
-      min-height: 100px;
-      text-shadow: 0 0 40px #ffff00;
+      margin-top: 30px;
+      font-size: 36px;
+      min-height: 110px;
+      text-shadow: 0 0 45px #ffff00;
     }
-    .win { animation: glow 0.7s infinite alternate; }
-    @keyframes glow { from { text-shadow: 0 0 25px #ffff00; } to { text-shadow: 0 0 70px #ffff00; } }
+
+    .win {
+      animation: glow 0.8s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 30px #ffff00; }
+      to   { text-shadow: 0 0 80px #ffff00; }
+    }
   </style>
 </head>
 <body>
@@ -160,7 +184,7 @@
 
     <div class="controls">
       <button onclick="changeBet(-30)">– BET</button>
-      <button onclick="spin()" style="padding:20px 85px; font-size:24px;">SPIN!</button>
+      <button onclick="spin()" style="padding:22px 90px; font-size:25px;">SPIN!</button>
       <button onclick="changeBet(30)">+ BET</button>
       <button onclick="toggleAuto()">AUTO SPIN</button>
     </div>
@@ -181,7 +205,7 @@
       const strip = document.createElement('div');
       strip.className = 'reel-strip';
       
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 35; i++) {
         const sym = document.createElement('div');
         sym.className = 'symbol';
         sym.textContent = symbols[Math.floor(Math.random() * symbols.length)];
@@ -201,29 +225,30 @@
 
     async function spin() {
       if (isSpinning || balance < bet) return;
+      
       isSpinning = true;
       balance -= bet;
       document.getElementById('balance').textContent = balance;
       document.getElementById('result').innerHTML = '';
 
       const reels = document.querySelectorAll('.reel-strip');
-      const durations = [2800, 3000, 3200, 3400, 3600, 3800];
+      const durations = [2650, 2950, 3250, 3550, 3850, 4150];
 
-      reels.forEach((reel, index) => {
+      reels.forEach((reel, i) => {
         reel.style.animation = 'none';
         void reel.offsetWidth;
-        reel.style.animation = `spin ${durations[index]}ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards`;
+        reel.style.animation = `spin ${durations[i]}ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards`;
       });
 
       setTimeout(() => {
-        const winAmount = Math.floor(bet * (Math.random() * 45 + 15));
+        const winAmount = Math.floor(bet * (Math.random() * 48 + 18));
         balance += winAmount;
         document.getElementById('winAmount').textContent = winAmount;
         document.getElementById('result').innerHTML = `🎉 BIG WIN! +${winAmount}€`;
         document.getElementById('result').classList.add('win');
         document.getElementById('balance').textContent = balance;
         isSpinning = false;
-      }, 4000);
+      }, 4400);
     }
 
     function changeBet(amount) {
@@ -234,11 +259,13 @@
     function toggleAuto() {
       autoSpinning = !autoSpinning;
       if (autoSpinning) {
-        setInterval(() => { if (!isSpinning && balance >= bet) spin(); }, 4500);
+        setInterval(() => {
+          if (!isSpinning && balance >= bet) spin();
+        }, 4800);
       }
     }
 
-    // Initialize
+    // Init
     initSlot();
     document.getElementById('balance').textContent = balance;
     document.getElementById('bet').textContent = bet;
