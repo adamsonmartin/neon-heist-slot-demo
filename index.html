@@ -18,7 +18,7 @@
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: 0 auto;
       background: rgba(15, 5, 45, 0.97);
       border: 10px solid #00ffcc;
@@ -27,17 +27,8 @@
       box-shadow: 0 0 130px rgba(0, 255, 204, 0.75);
     }
 
-    h1 {
-      font-size: 46px;
-      margin: 0 0 8px;
-      text-shadow: 0 0 45px #ff00cc;
-    }
-
-    .subtitle { 
-      font-size: 16px; 
-      opacity: 0.9; 
-      margin-bottom: 30px; 
-    }
+    h1 { font-size: 46px; margin: 0 0 8px; text-shadow: 0 0 45px #ff00cc; }
+    .subtitle { font-size: 16px; opacity: 0.9; margin-bottom: 30px; }
 
     .header {
       background: #110022;
@@ -101,13 +92,10 @@
       border-radius: 20px;
       margin: 40px auto;
       border: 4px solid #ffff00;
-      max-width: 860px;
+      max-width: 900px;
     }
 
-    .paytable h3 {
-      color: #ffff00;
-      margin-bottom: 20px;
-    }
+    .paytable h3 { color: #ffff00; margin-bottom: 20px; }
 
     table {
       width: 100%;
@@ -115,13 +103,11 @@
       font-size: 15px;
     }
     th, td {
-      padding: 14px 10px;
+      padding: 12px 8px;
       border: 2px solid #ff00cc;
       text-align: center;
     }
-    th {
-      background: #1f0033;
-    }
+    th { background: #1f0033; }
 
     .controls {
       margin-top: 30px;
@@ -169,43 +155,62 @@
 
     <div class="slot-machine" id="slot"></div>
 
-    <!-- UUS PAREM PAYTABLE -->
+    <!-- UUS DETAILNE PAYTABLE iga sümboli kohta -->
     <div class="paytable">
-      <h3>CLUSTER PAYTABLE — How much you win</h3>
+      <h3>PAYTABLE - Win per Symbol</h3>
       <table>
         <tr>
-          <th>Number of same symbols<br>connected (Cluster)</th>
-          <th>Multiplier</th>
-          <th>Win with 60€ Bet</th>
+          <th>Symbol</th>
+          <th>6 symbols</th>
+          <th>9 symbols</th>
+          <th>12 symbols</th>
+          <th>15+ symbols</th>
         </tr>
         <tr>
-          <td>5 – 7 symbols</td>
-          <td>× 6</td>
-          <td><strong>360 €</strong></td>
+          <td>💎 Diamond</td>
+          <td>480 €</td>
+          <td>1,320 €</td>
+          <td>2,700 €</td>
+          <td><strong>9,000 €</strong></td>
         </tr>
         <tr>
-          <td>8 – 10 symbols</td>
-          <td>× 18</td>
-          <td><strong>1,080 €</strong></td>
+          <td>🔫 Pistol</td>
+          <td>420 €</td>
+          <td>1,140 €</td>
+          <td>2,400 €</td>
+          <td>7,800 €</td>
         </tr>
         <tr>
-          <td>11 – 13 symbols</td>
-          <td>× 35</td>
-          <td><strong>2,100 €</strong></td>
+          <td>⭐ Star</td>
+          <td>360 €</td>
+          <td>960 €</td>
+          <td>2,100 €</td>
+          <td>6,600 €</td>
         </tr>
         <tr>
-          <td>14 – 16 symbols</td>
-          <td>× 65</td>
-          <td><strong>3,900 €</strong></td>
+          <td>⚡ Lightning</td>
+          <td>300 €</td>
+          <td>780 €</td>
+          <td>1,800 €</td>
+          <td>5,400 €</td>
         </tr>
         <tr>
-          <td>17+ symbols</td>
-          <td>× 120</td>
-          <td><strong>7,200 €</strong></td>
+          <td>💰 Money Bag</td>
+          <td>240 €</td>
+          <td>660 €</td>
+          <td>1,500 €</td>
+          <td>4,200 €</td>
+        </tr>
+        <tr>
+          <td>🍒 Cherries</td>
+          <td>180 €</td>
+          <td>480 €</td>
+          <td>1,080 €</td>
+          <td>3,000 €</td>
         </tr>
       </table>
       <p style="margin-top:15px; font-size:14px; opacity:0.85;">
-        The more same symbols you connect horizontally or vertically, the bigger the win.
+        Wins are calculated for connected clusters of the same symbol (horizontal or vertical).
       </p>
     </div>
 
@@ -231,7 +236,6 @@
       reel.className = 'reel';
       const strip = document.createElement('div');
       strip.className = 'reel-strip';
-      
       for (let i = 0; i < 35; i++) {
         const sym = document.createElement('div');
         sym.className = 'symbol';
@@ -252,7 +256,6 @@
 
     async function spin() {
       if (isSpinning || balance < bet) return;
-      
       isSpinning = true;
       balance -= bet;
       document.getElementById('balance').textContent = balance;
@@ -268,7 +271,7 @@
       });
 
       setTimeout(() => {
-        const winAmount = Math.floor(bet * (Math.random() * 55 + 20));
+        const winAmount = Math.floor(bet * (Math.random() * 60 + 25));
         balance += winAmount;
         document.getElementById('winAmount').textContent = winAmount;
         document.getElementById('result').innerHTML = `🎉 BIG WIN! +${winAmount}€`;
