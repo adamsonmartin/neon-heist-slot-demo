@@ -95,7 +95,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 72px;
+      font-size: 68px;
       font-weight: bold;
       color: #ffff00;
       text-shadow: 0 0 60px #ffff00, 0 0 110px #ff00cc;
@@ -248,27 +248,27 @@
       setTimeout(() => {
         const rand = Math.random();
         let winAmount = 0;
-        let winLevel = "";
+        let winText = "";
 
         if (rand < 0.38) {
-          winLevel = "NO WIN";
+          winText = "NO WIN";
         } else if (rand < 0.68) {
           winAmount = Math.floor(bet * (Math.random() * 8 + 3));
-          winLevel = "WIN";
+          winText = "WIN";
         } else if (rand < 0.88) {
           winAmount = Math.floor(bet * (Math.random() * 25 + 12));
-          winLevel = "BIG WIN";
+          winText = "BIG WIN";
         } else if (rand < 0.97) {
           winAmount = Math.floor(bet * (Math.random() * 60 + 35));
-          winLevel = "BIG WIN";
+          winText = "BIG WIN";
         } else {
           winAmount = Math.floor(bet * (Math.random() * 140 + 80));
-          winLevel = "MEGA WIN";
+          winText = "MEGA WIN";
         }
 
         if (winAmount > 0) {
           const bigWin = document.getElementById('bigWin');
-          bigWin.textContent = winLevel;
+          bigWin.textContent = winText;
           bigWin.style.opacity = '1';
           bigWin.style.transform = 'translate(-50%, -50%) scale(1.4)';
 
@@ -291,9 +291,12 @@
 
     function toggleAuto() {
       autoSpinning = !autoSpinning;
-      if (autoSpinning) setInterval(() => { if (!isSpinning && balance >= bet) spin(); }, 4600);
+      if (autoSpinning) {
+        setInterval(() => { if (!isSpinning && balance >= bet) spin(); }, 4600);
+      }
     }
 
+    // Initialize
     initSlot();
     updatePaytable();
     document.getElementById('balance').textContent = balance;
