@@ -6,160 +6,58 @@
   <title>🎰 NEON HEIST - Pro Slot Demo</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    body {
-      margin: 0;
-      background: linear-gradient(135deg, #0a001f, #1f0033);
-      color: #fff;
-      font-family: 'Press Start 2P', system-ui;
-      text-align: center;
-      padding: 20px;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 1180px;
-      margin: 0 auto;
-      background: rgba(15, 5, 45, 0.97);
-      border: 10px solid #00ffcc;
-      border-radius: 32px;
-      padding: 30px 20px;
-      box-shadow: 0 0 130px rgba(0, 255, 204, 0.75);
-    }
-    h1 { font-size: 46px; margin: 0 0 8px; text-shadow: 0 0 45px #ff00cc; }
-    .subtitle { font-size: 13px; opacity: 0.8; margin-bottom: 25px; letter-spacing: 0.05em; }
+    body { margin:0; background:linear-gradient(135deg,#0a001f,#1f0033); color:#fff; font-family:'Press Start 2P',system-ui; text-align:center; padding:20px; min-height:100vh; }
+    .container { max-width:1180px; margin:0 auto; background:rgba(15,5,45,0.97); border:10px solid #00ffcc; border-radius:32px; padding:30px 20px; box-shadow:0 0 130px rgba(0,255,204,0.75); }
+    h1 { font-size:46px; margin:0 0 8px; text-shadow:0 0 45px #ff00cc; }
+    .subtitle { font-size:13px; opacity:0.8; margin-bottom:25px; letter-spacing:0.05em; }
 
-    .header {
-      background: #110022;
-      padding: 20px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      border: 4px solid #ff00cc;
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 25px;
-      font-size: 16px;
-    }
-    .header-item { display: flex; flex-direction: column; gap: 6px; }
-    .header-label { font-size: 10px; color: #888; }
-    .header-val { font-size: 20px; }
-    .header-val.green { color: #00ff88; }
-    .header-val.yellow { color: #ffff00; }
+    .header { background:#110022; padding:20px; border-radius:20px; margin-bottom:20px; border:4px solid #ff00cc; display:flex; justify-content:space-around; flex-wrap:wrap; gap:25px; font-size:16px; }
+    .header-item { display:flex; flex-direction:column; gap:6px; }
+    .header-label { font-size:10px; color:#888; }
+    .header-val { font-size:20px; }
+    .header-val.green { color:#00ff88; }
+    .header-val.yellow { color:#ffff00; }
 
-    .slot-container {
-      position: relative;
-      margin: 0 auto 25px;
-      max-width: fit-content;
-    }
-    .slot-machine {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      padding: 25px;
-      background: #1a002f;
-      border: 14px solid #ffcc00;
-      border-radius: 24px;
-      box-shadow: 0 0 90px rgba(255, 204, 0, 0.85);
-    }
-    .reel {
-      width: 92px;
-      height: 368px;
-      overflow: hidden;
-      border: 5px solid #00ffcc;
-      border-radius: 14px;
-      background: #0f001a;
-      position: relative;
-    }
-    .reel::before, .reel::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0;
-      height: 60px;
-      z-index: 2;
-      pointer-events: none;
-    }
-    .reel::before { top: 0; background: linear-gradient(#0f001a, transparent); }
-    .reel::after { bottom: 0; background: linear-gradient(transparent, #0f001a); }
-    .reel-inner {
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.05s linear;
-    }
-    .symbol {
-      width: 92px;
-      height: 92px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 58px;
-      flex-shrink: 0;
-    }
-    .symbol.win-sym {
-      background: rgba(255, 204, 0, 0.2);
-      border-radius: 8px;
-      animation: winPulse 0.8s infinite alternate;
-    }
-    @keyframes winPulse { from { transform: scale(1); } to { transform: scale(1.08); } }
+    .slot-container { position:relative; margin:0 auto 25px; max-width:fit-content; }
+    .slot-machine { display:flex; gap:10px; justify-content:center; padding:25px; background:#1a002f; border:14px solid #ffcc00; border-radius:24px; box-shadow:0 0 90px rgba(255,204,0,0.85); }
+
+    .reel { width:92px; height:368px; overflow:hidden; border:5px solid #00ffcc; border-radius:14px; background:#0f001a; position:relative; }
+    .reel::before, .reel::after { content:''; position:absolute; left:0; right:0; height:60px; z-index:2; pointer-events:none; }
+    .reel::before { top:0; background:linear-gradient(#0f001a,transparent); }
+    .reel::after { bottom:0; background:linear-gradient(transparent,#0f001a); }
+    .reel-inner { display:flex; flex-direction:column; transition:transform 0.05s linear; }
+    .symbol { width:92px; height:92px; display:flex; align-items:center; justify-content:center; font-size:58px; flex-shrink:0; }
 
     #bigWin {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.6);
-      font-size: 58px;
-      color: #ffff00;
-      text-shadow: 0 0 40px #ffff00, 0 0 90px #ff00cc;
-      pointer-events: none;
-      opacity: 0;
-      z-index: 30;
-      white-space: nowrap;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.6);
+      font-size:58px; color:#ffff00; text-shadow:0 0 40px #ffff00, 0 0 90px #ff00cc;
+      pointer-events:none; opacity:0; z-index:30; white-space:nowrap;
+      transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
     }
 
     .controls {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 20px 0 30px 0;
-      align-items: center;
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin:20px 0 30px 0; align-items:center;
     }
     .ctrl-btn {
-      background: transparent;
-      color: #00ffcc;
-      border: 3px solid #00ffcc;
-      padding: 14px 28px;
-      font-size: 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-family: 'Press Start 2P', system-ui;
+      background:transparent; color:#00ffcc; border:3px solid #00ffcc; padding:14px 28px;
+      font-size:16px; border-radius:12px; cursor:pointer; font-family:'Press Start 2P',system-ui;
     }
-    .ctrl-btn:hover { background: #00ffcc; color: #000; }
+    .ctrl-btn:hover { background:#00ffcc; color:#000; }
 
     .spin-btn {
-      background: linear-gradient(45deg, #ff00cc, #cc00ff);
-      color: #fff;
-      border: none;
-      padding: 20px 90px;
-      font-size: 26px;
-      border-radius: 16px;
-      cursor: pointer;
-      box-shadow: 0 0 30px rgba(255, 0, 204, 0.6);
+      background:linear-gradient(45deg,#ff00cc,#cc00ff); color:#fff; border:none;
+      padding:20px 90px; font-size:26px; border-radius:16px; cursor:pointer; box-shadow:0 0 30px rgba(255,0,204,0.6);
     }
-    .spin-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(255, 0, 204, 0.9); }
+    .spin-btn:hover { transform:scale(1.05); box-shadow:0 0 50px rgba(255,0,204,0.9); }
 
     .paytable {
-      background: #110022;
-      padding: 25px;
-      border-radius: 20px;
-      margin: 0 auto;
-      border: 4px solid #ffff00;
-      max-width: 1050px;
+      background:#110022; padding:25px; border-radius:20px; margin:0 auto; border:4px solid #ffff00; max-width:1050px;
     }
-    .paytable h3 { font-size: 14px; margin-bottom: 16px; color: #ffff00; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 10px 8px; border: 2px solid #ff00cc; text-align: center; }
-    th { background: #1f0033; color: #ffff00; font-size: 12px; }
-    td:first-child { text-align: left; font-size: 14px; }
+    .paytable h3 { font-size:14px; margin-bottom:16px; color:#ffff00; }
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th, td { padding:10px 8px; border:2px solid #ff00cc; text-align:center; }
+    th { background:#1f0033; color:#ffff00; font-size:12px; }
+    td:first-child { text-align:left; font-size:14px; }
   </style>
 </head>
 <body>
@@ -168,26 +66,11 @@
   <p class="subtitle">6 REELS · 5 ROWS · CLUSTER PAYS · RTP 96.5% · Martin Adamson</p>
 
   <div class="header">
-    <div class="header-item">
-      <div class="header-label">BALANCE</div>
-      <div class="header-val green" id="balance">8500 €</div>
-    </div>
-    <div class="header-item">
-      <div class="header-label">BET</div>
-      <div class="header-val" id="bet-display">60 €</div>
-    </div>
-    <div class="header-item">
-      <div class="header-label">LAST WIN</div>
-      <div class="header-val yellow" id="winAmount">0 €</div>
-    </div>
-    <div class="header-item">
-      <div class="header-label">TOTAL WON</div>
-      <div class="header-val yellow" id="totalWon">0 €</div>
-    </div>
-    <div class="header-item">
-      <div class="header-label">SPINS</div>
-      <div class="header-val" id="spinCount">0</div>
-    </div>
+    <div class="header-item"><div class="header-label">BALANCE</div><div class="header-val green" id="balance">8500 €</div></div>
+    <div class="header-item"><div class="header-label">BET</div><div class="header-val" id="bet-display">60 €</div></div>
+    <div class="header-item"><div class="header-label">LAST WIN</div><div class="header-val yellow" id="winAmount">0 €</div></div>
+    <div class="header-item"><div class="header-label">TOTAL WON</div><div class="header-val yellow" id="totalWon">0 €</div></div>
+    <div class="header-item"><div class="header-label">SPINS</div><div class="header-val" id="spinCount">0</div></div>
   </div>
 
   <div class="slot-container">
@@ -216,18 +99,14 @@ const paytableData = [
   { sym:"⚡", name:"Lightning",   v6:5,   v9:14,  v12:30,  v15:95  },
   { sym:"🔥", name:"Fire",        v6:4.5, v9:12,  v12:26,  v15:80  },
   { sym:"💰", name:"Money Bag",   v6:4,   v9:10,  v12:22,  v15:70  },
-  { sym:"🕶️", name:"Sunglasses", v6:3.5, v9:9,   v12:19,  v15:60  },
+  { sym:"🕶️",name:"Sunglasses",  v6:3.5, v9:9,   v12:19,  v15:60  },
   { sym:"🃏", name:"Joker",       v6:3,   v9:8,   v12:17,  v15:52  },
   { sym:"🍒", name:"Cherries",    v6:2.5, v9:6.5, v12:14,  v15:42  },
   { sym:"🌟", name:"Golden Star", v6:2,   v9:5,   v12:11,  v15:35  }
 ];
 
-let balance = 8500;
-let bet = 60;
-let totalWon = 0;
-let spinCount = 0;
-let isSpinning = false;
-let autoSpinning = false;
+let balance = 8500, bet = 60, totalWon = 0, spinCount = 0;
+let isSpinning = false, autoSpinning = false;
 
 function fmt(n) { return n.toLocaleString() + ' €'; }
 
@@ -236,13 +115,11 @@ function updatePaytable() {
   document.getElementById("bet-display").textContent = bet + ' €';
   let html = '<tr><th>Symbol</th><th>6 symbols</th><th>9 symbols</th><th>12 symbols</th><th>15+ symbols</th></tr>';
   paytableData.forEach(item => {
-    html += `<tr>
-      <td>${item.sym} ${item.name}</td>
+    html += `<tr><td>${item.sym} ${item.name}</td>
       <td>${Math.round(bet * item.v6)} €</td>
       <td>${Math.round(bet * item.v9)} €</td>
       <td>${Math.round(bet * item.v12)} €</td>
-      <td><strong>${Math.round(bet * item.v15)} €</strong></td>
-    </tr>`;
+      <td><strong>${Math.round(bet * item.v15)} €</strong></td></tr>`;
   });
   document.getElementById("paytable").innerHTML = html;
 }
@@ -268,7 +145,6 @@ function initSlot() {
 
 async function doSpin() {
   if (isSpinning || balance < bet) return;
-
   isSpinning = true;
   balance -= bet;
   spinCount++;
@@ -276,13 +152,12 @@ async function doSpin() {
   document.getElementById('spinCount').textContent = spinCount;
   document.getElementById('winAmount').textContent = '0 €';
 
-  // Reel spinning
   const reels = document.querySelectorAll('.reel-inner');
   reels.forEach((reel, i) => {
     reel.style.transition = 'none';
     reel.style.transform = 'translateY(-2000px)';
     void reel.offsetWidth;
-    reel.style.transition = `transform ${2.2 + i*0.25}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
+    reel.style.transition = `transform ${2.4 + i*0.3}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
     reel.style.transform = 'translateY(0)';
   });
 
@@ -323,11 +198,6 @@ function toggleAuto() {
   if (autoSpinning) {
     const interval = setInterval(() => {
       if (!isSpinning && balance >= bet) doSpin();
-      else if (balance < bet) {
-        clearInterval(interval);
-        autoSpinning = false;
-        btn.classList.remove('active');
-      }
     }, 2500);
   }
 }
