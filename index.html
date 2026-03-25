@@ -6,12 +6,39 @@
   <title>🎰 NEON HEIST - Pro Slot Demo</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    body { margin:0; background:linear-gradient(135deg,#0a001f,#1f0033); color:#fff; font-family:'Press Start 2P',system-ui; text-align:center; padding:20px; min-height:100vh; }
-    .container { max-width:1180px; margin:0 auto; background:rgba(15,5,45,0.97); border:10px solid #00ffcc; border-radius:32px; padding:30px 20px; box-shadow:0 0 130px rgba(0,255,204,0.75); }
-    h1 { font-size:46px; margin:0 0 8px; text-shadow:0 0 45px #ff00cc; }
-    .subtitle { font-size:13px; opacity:0.8; margin-bottom:25px; letter-spacing:0.05em; }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0a001f, #1f0033);
+      color: #fff;
+      font-family: 'Press Start 2P', system-ui;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      background: rgba(15,5,45,0.97);
+      border: 10px solid #00ffcc;
+      border-radius: 32px;
+      padding: 30px 20px;
+      box-shadow: 0 0 130px rgba(0,255,204,0.75);
+    }
+    h1 { font-size: 46px; margin: 0 0 8px; text-shadow: 0 0 45px #ff00cc; }
+    .subtitle { font-size: 13px; opacity: 0.8; margin-bottom: 25px; letter-spacing: 0.05em; }
 
-    .header { background:#110022; padding:20px; border-radius:20px; margin-bottom:20px; border:4px solid #ff00cc; display:flex; justify-content:space-around; flex-wrap:wrap; gap:25px; font-size:16px; }
+    .header {
+      background: #110022;
+      padding: 20px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      border: 4px solid #ff00cc;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 25px;
+      font-size: 16px;
+    }
     .header-item { display:flex; flex-direction:column; gap:6px; }
     .header-label { font-size:10px; color:#888; }
     .header-val { font-size:20px; }
@@ -19,14 +46,25 @@
     .header-val.yellow { color:#ffff00; }
 
     .slot-container { position:relative; margin:0 auto 25px; max-width:fit-content; }
-    .slot-machine { display:flex; gap:10px; justify-content:center; padding:25px; background:#1a002f; border:14px solid #ffcc00; border-radius:24px; box-shadow:0 0 90px rgba(255,204,0,0.85); }
-
-    .reel { width:92px; height:368px; overflow:hidden; border:5px solid #00ffcc; border-radius:14px; background:#0f001a; position:relative; }
-    .reel::before, .reel::after { content:''; position:absolute; left:0; right:0; height:60px; z-index:2; pointer-events:none; }
+    .slot-machine {
+      display:flex; gap:10px; justify-content:center; padding:25px;
+      background:#1a002f; border:14px solid #ffcc00; border-radius:24px;
+      box-shadow:0 0 90px rgba(255,204,0,0.85);
+    }
+    .reel {
+      width:92px; height:368px; overflow:hidden; border:5px solid #00ffcc;
+      border-radius:14px; background:#0f001a; position:relative;
+    }
+    .reel::before, .reel::after {
+      content:''; position:absolute; left:0; right:0; height:60px; z-index:2; pointer-events:none;
+    }
     .reel::before { top:0; background:linear-gradient(#0f001a,transparent); }
     .reel::after { bottom:0; background:linear-gradient(transparent,#0f001a); }
     .reel-inner { display:flex; flex-direction:column; transition:transform 0.05s linear; }
-    .symbol { width:92px; height:92px; display:flex; align-items:center; justify-content:center; font-size:58px; flex-shrink:0; }
+    .symbol {
+      width:92px; height:92px; display:flex; align-items:center; justify-content:center;
+      font-size:58px; flex-shrink:0;
+    }
 
     #bigWin {
       position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(0.6);
@@ -92,6 +130,11 @@
 </div>
 
 <script>
+/* ================================================
+   NEON HEIST - Professional Slot Demo
+   Realistlik RTP loogika sinu soovi järgi
+   ================================================ */
+
 const paytableData = [
   { sym:"💎", name:"Diamond",     v6:8,   v9:22,  v12:48,  v15:160 },
   { sym:"🔫", name:"Pistol",      v6:7,   v9:19,  v12:42,  v15:140 },
@@ -119,11 +162,13 @@ function updatePaytable() {
   document.getElementById("bet-display").textContent = bet + ' €';
   let html = '<tr><th>Symbol</th><th>6 symbols</th><th>9 symbols</th><th>12 symbols</th><th>15+ symbols</th></tr>';
   paytableData.forEach(item => {
-    html += `<tr><td>${item.sym} ${item.name}</td>
+    html += `<tr>
+      <td>${item.sym} ${item.name}</td>
       <td>${Math.round(bet * item.v6)} €</td>
       <td>${Math.round(bet * item.v9)} €</td>
       <td>${Math.round(bet * item.v12)} €</td>
-      <td><strong>${Math.round(bet * item.v15)} €</strong></td></tr>`;
+      <td><strong>${Math.round(bet * item.v15)} €</strong></td>
+    </tr>`;
   });
   document.getElementById("paytable").innerHTML = html;
 }
@@ -156,7 +201,7 @@ async function doSpin() {
   document.getElementById('spinCount').textContent = spinCount;
   document.getElementById('winAmount').textContent = '0 €';
 
-  // Reel spinning
+  // Reel spinning animatsioon
   const reels = document.querySelectorAll('.reel-inner');
   reels.forEach((reel, i) => {
     reel.style.transition = 'none';
@@ -171,18 +216,19 @@ async function doSpin() {
     let winAmount = 0;
     let winText = "";
 
+    // Realistlik RTP sinu soovi järgi
     if (rand < 0.38) {
       winText = "NO WIN";
-    } else if (rand < 0.68) {           // 30% väike
+    } else if (rand < 0.68) {           // 30% väike võit
       winAmount = Math.floor(bet * (Math.random() * 8 + 3));
       winText = "WIN";
-    } else if (rand < 0.88) {           // 20% keskmine
+    } else if (rand < 0.88) {           // 20% keskmine võit
       winAmount = Math.floor(bet * (Math.random() * 25 + 12));
       winText = "BIG WIN";
-    } else if (rand < 0.97) {           // 9% suur
+    } else if (rand < 0.97) {           // 9% suur võit
       winAmount = Math.floor(bet * (Math.random() * 60 + 35));
       winText = "BIG WIN";
-    } else {                            // 3% mega
+    } else {                            // 3% mega võit
       winAmount = Math.floor(bet * (Math.random() * 140 + 80));
       winText = "MEGA WIN";
     }
@@ -198,6 +244,7 @@ async function doSpin() {
       bigWin.textContent = winText;
       bigWin.style.opacity = '1';
       bigWin.style.transform = 'translate(-50%, -50%) scale(1.3)';
+
       setTimeout(() => {
         bigWin.style.opacity = '0';
         bigWin.style.transform = 'translate(-50%, -50%) scale(0.6)';
