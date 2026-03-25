@@ -105,8 +105,12 @@ const paytableData = [
   { sym:"🌟", name:"Golden Star", v6:2,   v9:5,   v12:11,  v15:35  }
 ];
 
-let balance = 8500, bet = 60, totalWon = 0, spinCount = 0;
-let isSpinning = false, autoSpinning = false;
+let balance = 8500;
+let bet = 60;
+let totalWon = 0;
+let spinCount = 0;
+let isSpinning = false;
+let autoSpinning = false;
 
 function fmt(n) { return n.toLocaleString() + ' €'; }
 
@@ -152,6 +156,7 @@ async function doSpin() {
   document.getElementById('spinCount').textContent = spinCount;
   document.getElementById('winAmount').textContent = '0 €';
 
+  // Reel spinning
   const reels = document.querySelectorAll('.reel-inner');
   reels.forEach((reel, i) => {
     reel.style.transition = 'none';
@@ -162,23 +167,42 @@ async function doSpin() {
   });
 
   setTimeout(() => {
-    const winAmount = Math.floor(bet * (Math.random() * 85 + 35));
-    balance += winAmount;
-    totalWon += winAmount;
+    const rand = Math.random();
+    let winAmount = 0;
+    let winText = "";
 
-    document.getElementById('balance').textContent = fmt(balance);
-    document.getElementById('winAmount').textContent = fmt(winAmount);
-    document.getElementById('totalWon').textContent = fmt(totalWon);
+    if (rand < 0.38) {
+      winText = "NO WIN";
+    } else if (rand < 0.68) {           // 30% väike
+      winAmount = Math.floor(bet * (Math.random() * 8 + 3));
+      winText = "WIN";
+    } else if (rand < 0.88) {           // 20% keskmine
+      winAmount = Math.floor(bet * (Math.random() * 25 + 12));
+      winText = "BIG WIN";
+    } else if (rand < 0.97) {           // 9% suur
+      winAmount = Math.floor(bet * (Math.random() * 60 + 35));
+      winText = "BIG WIN";
+    } else {                            // 3% mega
+      winAmount = Math.floor(bet * (Math.random() * 140 + 80));
+      winText = "MEGA WIN";
+    }
 
-    const bigWin = document.getElementById('bigWin');
-    bigWin.textContent = winAmount > bet * 50 ? "MEGA WIN!" : "BIG WIN!";
-    bigWin.style.opacity = '1';
-    bigWin.style.transform = 'translate(-50%, -50%) scale(1.3)';
+    if (winAmount > 0) {
+      balance += winAmount;
+      totalWon += winAmount;
+      document.getElementById('balance').textContent = fmt(balance);
+      document.getElementById('winAmount').textContent = fmt(winAmount);
+      document.getElementById('totalWon').textContent = fmt(totalWon);
 
-    setTimeout(() => {
-      bigWin.style.opacity = '0';
-      bigWin.style.transform = 'translate(-50%, -50%) scale(0.6)';
-    }, 2200);
+      const bigWin = document.getElementById('bigWin');
+      bigWin.textContent = winText;
+      bigWin.style.opacity = '1';
+      bigWin.style.transform = 'translate(-50%, -50%) scale(1.3)';
+      setTimeout(() => {
+        bigWin.style.opacity = '0';
+        bigWin.style.transform = 'translate(-50%, -50%) scale(0.6)';
+      }, 2200);
+    }
 
     isSpinning = false;
   }, 3200);
